@@ -1,0 +1,166 @@
+<?= $this->inlineScript() ?>
+<h1>Lista de imoveis</h1>
+<?php 
+    $flash = $this->flashMessenger();
+    $flash->setMessageOpenFormat('<div>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+            &times;
+        </button>
+        <ul><li>')
+        ->setMessageSeparatorString('</li><li>')
+        ->setMessageCloseString('</li></ul></div>');
+    $error = $flash->render('error',   array('alert', 'alert-dismissible', 'alert-danger'));
+    $success = $flash->render('success', array('alert', 'alert-dismissible', 'alert-success'));
+?>
+<?php if ($success != null){?>
+    <div class="alert alert-success">
+        <ul>
+            <li><?= $success?></li>
+        </ul>
+    </div><br />
+<?php }?>
+<?php if ($error != null){?>
+    <div class="alert alert-danger">
+        <ul>
+            <li><?= $error?></li>
+        </ul>
+    </div><br />
+<?php }?>
+
+<table class="table table-striped" id="datatablepadrao" tbody-fixed="false">
+    <thead>
+        <tr>    
+            <th>Tipo de Imovel</th>
+            <th> Endereço </th>
+            <th> Preço </th>
+            <th> Status </th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr>    
+            <th class="replace-th">Tipo de Imovel</th>
+            <th class="replace-th"> Endereço </th>
+            <th class="replace-th"> Preço </th>
+            <th class="replace-th"> Status </th>
+            <th class="replace-th"></th>
+            <th class="replace-th"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php 
+            foreach($imoveis as $imovel):
+        ?>
+            <tr>
+                <td style="width:100px;">
+                    <?=
+                    $imovel->tipo
+                    ?>
+                </td>
+                <td style="width:250px;">
+                    <?=
+                    $imovel->endereco
+                    ?>
+                </td>
+                <td style="width:75px;">
+                    <?=
+                    $imovel->preco
+                    ?>
+                </td>
+                <td style="width:90px;">
+                    <?=
+                    $imovel->status
+                    ?>
+                </td>
+                <td style="width:50px;">
+                    <a href="<?= $this->url('imovel', ['action'=>'update','id'=>$imovel->id])?>" class="btn btn-info">Editar</a>
+                </td>
+                <td style="width:50px;">
+                    <a href="<?= $this->url('imovel', ['action'=>'delete','id'=>$imovel->id])?>" class="btn btn-warning">Excluir</a>
+                </td>
+            </tr>
+        
+        <?php
+            endforeach;
+        ?>
+    </tbody>
+    <tfoot>
+        <tr>    
+            <th>Tipo de Imovel</th>
+            <th> Endereço </th>
+            <th> Preço </th>
+            <th> Status </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </tfoot>
+</table>
+<script>
+let table = new DataTable('#datatablepadrao', {
+    // options
+    "oLanguage": {
+          "sLengthMenu": "Mostrar _MENU_ registros",
+          "sSearch": "",
+          "sInfo": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+          "sInfoFiltered": "(Filtrado do total de _MAX_ registros)",
+          "sEmptyTable": "Nenhum registro encontrado",
+          "sInfoEmpty": "Nenhum registro encontrado",
+          "sLoadingRecords": "Aguarde - carregando...",
+          "sProcessing": "Processando...",
+          "oPaginate": {
+            "sFirst": "Primeira",
+            "sPrevious": "Anterior",
+            "sNext": "Próxima",
+            "sLast": "Última"
+          }
+        },
+        "aLengthMenu": [
+          [5, 10,15, 30, -1],
+          [5, 10,15, 30, "Todos"]
+        ],
+        "iDisplayLength": 10,
+});
+    //Habilita pesquisa, ordenação e paginação na tabela
+(function($) {
+    'use strict';
+    $(function() {
+      
+      $('#datatablepadrao').each(function() {
+        var datatable = $(this);
+        // SEARCH - Add the placeholder for Search and Turn this into in-line form control
+        var search_input = datatable.closest('.dataTables_wrapper').find('div[id$=_filter] input');
+        search_input.attr('placeholder', 'Pesquisar');
+        search_input.removeClass('form-control-sm');        
+        // LENGTH - Inline-Form control
+        var length_sel = datatable.closest('.dataTables_wrapper').find('div[id$=_length] select');
+        length_sel.removeClass('form-control-sm');
+      });
+    });
+  })(jQuery);
+
+  $(document).ready(function() {
+
+      // Setup - add a text input to each footer cell
+      $('.replace-th').each( function () {
+          var title = $('#datatablepadrao tfoot th').eq( $(this).index() ).text();
+          $(this).html( '<input type="text" placeholder="'+title+'..." />' );
+      } );
+  
+      // DataTable
+    //   var table = $('#datatablepadrao').DataTable();
+  
+      // Apply the search
+      table.columns().eq( 0 ).each( function ( colIdx ) {
+          $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+              table
+                  .column( colIdx )
+                  .search( this.value )
+                  .draw();
+          } );
+  
+          $('input', table.column(colIdx).header()).on('click', function(e) {
+              e.stopPropagation();
+          });
+      } );
+  } );
+
+</script>

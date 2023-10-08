@@ -1,0 +1,97 @@
+<?php
+        
+    $title = "Editando  imovel";
+    $this->headTitle($title);
+    
+?>
+
+<?php 
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    $id = $this->form->get('id');
+    $tipo = $this->form->get('tipo');
+    $endereco = $this->form->get('endereco');
+    $preco = $this->form->get('preco');
+    $status = $this->form->get('status');
+    $tipo->setAttribute('class', 'form-control');
+    $tipo->setAttribute('autofocus', 'autofocus');
+    $submit = $this->form->get('submit');
+    $submit->setAttribute('class', 'btn btn-primary btn-lg');
+?>
+<?= $this->formElement($id) ?>
+<div class="container-scroller">
+    <div class="container-fluid page-body-wrapper">
+        <div class="main-panel">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6">        
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <?= $this->formLabel($tipo)?>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <?= $this->formElement($tipo)?>
+                                            <?= $this->formElementErrors()->render($tipo, ['class' =>'help-block'])?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">        
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <?= $this->formLabel($endereco)?>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <?= $this->formElement($endereco)?>
+                                            <?= $this->formElementErrors()->render($endereco, ['class' =>'help-block'])?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">        
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                        <?= $this->formLabel($preco)?>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <?= $this->formElement($preco)?>
+                                            <?= $this->formElementErrors()->render($preco, ['class' =>'help-block'])?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">        
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">
+                                            <?= $this->formLabel($status)?>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <?= $this->formElement($status)?>
+                                            <?= $this->formElementErrors()->render($status, ['class' =>'help-block'])?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-6">        
+                                    
+                                    
+                                </div>
+                            </div>
+                            <div class="form-group text-center"">
+                                <?=$this->formElement($submit)?>
+                                <a href="<?=$this->url('imovel', ['action'=>'index'])?>" class="btn btn-warning">Voltar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
